@@ -15,7 +15,7 @@ def f_hubble1(params, d):
     
 def f_hubble2(params, v):
     H = params
-    return H / v
+    return v / H
 
 def funcion_a_minimizar1(H, d):
     params = H
@@ -25,6 +25,25 @@ def funcion_a_minimizar2(H, v):
     params = H
     return f_hubble2(params, v)
     
+def bootstrap(data, H_0):
+    ''' simulación de bootstrap para encontrar el
+    intervalo de  confianza (95%)'''
+    N, N1 = data.shape
+    N_boot = 10000
+    H = np.zeros(N_boot)
+    for i in range(N_boot):
+        s = np.random.randint(low=0, high=N, size=N)
+        fake_data = data[s][s]
+        d = fake_data[:, 0]
+        v = fake_data[:, 1]
+        a_optimo1, a_covarianza1 = curve_fit(funcion_a_minimizar1,
+                                               d, v, 2)
+        a_optimo2, a_covarianza2 = curve_fit(funcion_a_minimizar2,
+                                               v, d, 2)
+        a_promedio = (a_optimo2 + a_optimo1) / 2
+        H[i] = a_promedio
+        
+    
 #Main
 
 hubble = np.loadtxt("data/hubble_original.dat")
@@ -32,7 +51,7 @@ d = hubble[:, 0]
 v = hubble[:, 1]
 
 a_optimo1, a_covarianza1 = curve_fit(funcion_a_minimizar1, d, v, 2)
-a_optimo2, a_covarianza2 = curve_fit(funcion_a_minimizar2, d, v, 2)
+a_optimo2, a_covarianza2 = curve_fit(funcion_a_minimizar2, v, d, 2)
 a_promedio = (a_optimo1 + a_optimo2) / 2
 H_0 = a_promedio
 print ("H_0 = " + str(H_0))
