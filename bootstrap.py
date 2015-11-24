@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from scipy.optimize import (leastsq, curve_fit)
 """
-Este codigo extrae los datos medidos de Hubble y deriva la constante de Hubble
+Este codigo extrae los datos medidos y deriva la constante de Hubble
 incluyendo su intervalo de confianza al 95%, usando curve_fit.
 """
 
