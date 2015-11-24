@@ -26,7 +26,7 @@ def funcion_a_minimizar2(H, v):
     return f_hubble2(params, v)
     
 def bootstrap(data, H_0):
-    ''' simulación de bootstrap para encontrar el
+    ''' Simulación de bootstrap para encontrar el
     intervalo de  confianza (95%)'''
     N, N1 = data.shape
     N_boot = 10000
@@ -42,6 +42,11 @@ def bootstrap(data, H_0):
                                                v, d, 2)
         a_promedio = (a_optimo2 + a_optimo1) / 2
         H[i] = a_promedio
+    H = np.sort(H)
+    limite_bajo = H[int(N_boot * 0.025)]
+    limite_alto = H[int(N_boot * 0.975)]
+    print "El intervalo de confianza al 95% es: [{}:{}]".format(limite_bajo,
+                                                                limite_alto)
         
     
 #Main
@@ -55,3 +60,5 @@ a_optimo2, a_covarianza2 = curve_fit(funcion_a_minimizar2, v, d, 2)
 a_promedio = (a_optimo1 + a_optimo2) / 2
 H_0 = a_promedio
 print ("H_0 = " + str(H_0))
+
+intervalo_confianza = bootstrap(hubble, H_0)
