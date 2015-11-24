@@ -9,6 +9,19 @@ Este codigo extrae los datos medidos de Hubble y deriva la constante de Hubble
 incluyendo su intervalo de confianza al 95%, usando curve_fit.
 """
 
+def mostrar_datos(d, v, H1, H2, H_promedio):
+    ''' Recibe el arreglo de distancias y velocidades y las grafica'''
+    ax, fig = plt.subplots()
+    plt.scatter(d, v, label="Datos originales")
+    fig.plot(d, f_hubble1(H1, d), label="modelo con V=D*H")
+    fig.plot(f_hubble2(H2, v), v, label="modelo con V/H = D")
+    fig.plot(d, H_promedio * d, label="Modelo con H promedio")
+    fig.set_title("Datos originales y ajuste lineal")
+    fig.set_xlabel("Distancia [Mpc]")
+    fig.set_ylabel("Velocidad [Km/s]")
+    plt.legend(loc=2)
+    plt.savefig("hubble_1.jpg")
+
 def f_hubble1(params, d):
     H = params
     return H * d
