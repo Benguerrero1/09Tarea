@@ -4,6 +4,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import (leastsq, curve_fit)
 
+def graficar(banda_i, error_i, banda_z, error_z, c):
+    '''Grafica los datos originales con sus errores asociados,
+    grafica el ajuste lineal polyfit'''
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot(111)
+    ax1.errorbar(banda_i, banda_z, xerr=error_i, yerr=error_z, fmt="o",
+                 label="Datos originales con error")
+    x = np.linspace(-100, 500, 600)
+    ax1.plot(x, c[1] + x*c[0], color="r", label="ajuste lineal")
+    ax1.set_title("Datos originales y ajuste lineal")
+    ax1.set_xlabel("Flujo banda i [$10^{-6}Jy$]")
+    ax1.set_ylabel("Flujo banda z [$10^{-6}Jy$]")
+    plt.legend(loc=2)
+    plt.savefig("DR9Q.jpg")
 
 def mc(banda_i, error_i, banda_z, error_z, c_0):
     '''Realiza una simulación de Monte Carlo para obtener el intervalo de
