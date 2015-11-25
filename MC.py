@@ -39,3 +39,4 @@ banda_z = data[:, 2] * 3.631
 error_z = data[:, 3] * 3.631
 c = np.polyfit(banda_i, banda_z, 1)
 print("recta : {}x + {}".format(c[0], c[1]))
+intervalo_confianza = mc(banda_i, error_i, banda_z, error_z, c)
