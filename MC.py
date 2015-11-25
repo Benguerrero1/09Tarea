@@ -4,9 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import (leastsq, curve_fit)
 
+'''
+Este código genera la linea recta que mejor modela la relacion entre las 
+bandas i y z, incluyendo los intervalos de confianza al 95% usando MC,
+a partir de los datos en data/DR9Q.dat 
+'''
+
 def graficar(banda_i, error_i, banda_z, error_z, c):
     '''Grafica los datos originales con sus errores asociados,
-    grafica el ajuste lineal polyfit'''
+    junto con el ajuste lineal polyfit'''
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
     ax1.errorbar(banda_i, banda_z, xerr=error_i, yerr=error_z, fmt="o",
@@ -54,3 +60,5 @@ error_z = data[:, 3] * 3.631
 c = np.polyfit(banda_i, banda_z, 1)
 print("recta : {}x + {}".format(c[0], c[1]))
 intervalo_confianza = mc(banda_i, error_i, banda_z, error_z, c)
+graficar(banda_i, error_i, banda_z, error_z, c)
+plt.show()
